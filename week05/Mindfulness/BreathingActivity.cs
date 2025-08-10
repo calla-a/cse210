@@ -7,7 +7,8 @@ namespace Mindfulness
 {
     public class BreathingActivity : Activity
     {
-        public BreathingActivity(string name, string description) : base(name, description)
+        public BreathingActivity() : base("Breathing Activity",
+                                        "relax by walking your through breathing in and out slowly. Clear your mind and focus on your breathing")
         {
             
         }

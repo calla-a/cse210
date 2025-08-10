@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,9 +10,16 @@ namespace Mindfulness
     {
         private List<string> _prompts;
         private List<string> _questions;
+        
+        // new attributes created to select only prompts and questions that haven't been selected
+        private List<string> _avPrompts;
+        private List<string> _avQuestions;
+        private Random _randomElement = new Random();
 
-        public ReflectingActivity(string name, string description) : base(name, description)
+        public ReflectingActivity() : base("Reflecting Activity",
+                                    "reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life")
         {
+
             _prompts = new List<string>
             {
                 "Think of a time when you stood up for someone else.",
@@ -19,6 +27,7 @@ namespace Mindfulness
                 "Think of a time when you helped someone in need.",
                 "Think of a time when you did something truly selfless."
             };
+            _avPrompts = new List<string>(_prompts);
 
             _questions = new List<string>
             {
@@ -32,14 +41,65 @@ namespace Mindfulness
                 "What did you learn about yourself through this experience?",
                 "How can you keep this experience in mind in the future?"
             };
+            _avQuestions = new List<string>(_questions);
         }
-// me quede en agregar elementos a las listas _prompts y _questions. Ahora deberia comenzar a
-// crear los demas metodos de la clase y luego integrarlos al metodo Run() 
+ 
         public void Run()
         {
             DisplayStartingMessage();
-
+            Console.WriteLine("Consider the following prompt:");
+            Console.WriteLine();
+            DisplayPrompt();
+            Console.WriteLine();
+            Console.WriteLine("When you have something in mind, press entre to continue.");
+            Console.ReadLine();
+            Console.WriteLine("Now ponder on each of the following questions as they related to this experience.");
+            Console.Write("You may begin in: ");
+            ShowCountDown(5);
+            Console.Clear();
+            DateTime startTime = DateTime.Now;
+            DateTime endTime = startTime.AddSeconds(GetDuration());
+            while (DateTime.Now < endTime)
+            {
+                DisplayQuestions();
+                ShowSpinner(15);
+            }
+            Console.WriteLine();
             DisplayEndingMessage();
+        }
+
+        public string GetRandomPrompt()
+        {
+            if (_avPrompts.Count == 0)
+            {
+                _avPrompts = new List<string>(_prompts);
+            }
+            int index = _randomElement.Next(_avPrompts.Count);
+            string selectedPrompt = _avPrompts[index];
+            _avPrompts.RemoveAt(index);
+            return selectedPrompt;
+        }
+
+        public string GetRandomQuestion()
+        {
+            if (_avQuestions.Count == 0)
+            {
+                _avQuestions = new List<string>(_questions);
+            }
+            int index = _randomElement.Next(_avQuestions.Count);
+            string selectedQuestion = _avQuestions[index];
+            _avQuestions.RemoveAt(index);
+            return selectedQuestion;
+        }
+
+        public void DisplayPrompt()
+        {
+            Console.WriteLine($" --- {GetRandomPrompt()} ---");
+        }
+
+        public void DisplayQuestions()
+        {
+            Console.Write($"> {GetRandomQuestion()} ");
         }
     }
 }

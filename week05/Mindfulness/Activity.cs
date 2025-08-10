@@ -36,7 +36,6 @@ namespace Mindfulness
         {
             Console.WriteLine("Well done!!");
             ShowSpinner(3);
-            Console.WriteLine();
             Console.WriteLine($"You have completed another {_duration} seconds of the {_name}.");
             ShowSpinner(4);
             Console.Clear();
@@ -66,7 +65,7 @@ namespace Mindfulness
                     i = 0;
                 }
             }
-            Console.WriteLine("\b \b");
+            Console.WriteLine(" \b \b");
             Console.CursorVisible = true;
             //Console.WriteLine();
         }
@@ -114,6 +113,11 @@ namespace Mindfulness
         public void SetDuration(int duration)
         {
             _duration = duration;
+        }
+
+        public string GetName()
+        {
+            return _name;
         }
     }
 }
